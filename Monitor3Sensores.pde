@@ -5,6 +5,9 @@ import java.util.Date;
 Writer writer;
 ArduinoCOM arduino;
 final String portName = "COM7";
+final int sensibilidde = 10;
+final double esquecimento = 0.8;
+final double amortecimento = 0.2;
 SimpleDateFormat sdf, hms;
 final int len = 3;
 boolean mudou;
@@ -36,7 +39,10 @@ void draw()
 	int[] temp = arduino.get3Ana();
 	for (int i = 0; i < temp.length; ++i)
 	{
-		if(temp[i] < val[i] - 5 || temp[i] > val[i] + 5)
+		temp[i]*= amortecimento;
+		val[i] *= esquecimento;
+		
+		if(temp[i] < val[i] - sensibilidde || temp[i] > val[i] + sensibilidde)
 		{
 			mudou = true;
 			val[i] = temp[i];
